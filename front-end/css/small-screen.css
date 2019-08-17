@@ -1,0 +1,19 @@
+@media only all and (max-width:800px) {
+
+#app-container {
+	width: 99.2vw;
+}
+
+#dragbar {
+	height: 7vh;
+}
+
+#dragbar div.top {
+	margin-top: 1vh;
+}
+
+#content {
+	height: 92vh;
+}
+
+}

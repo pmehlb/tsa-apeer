@@ -1,0 +1,23 @@
+{
+  "name": "appeer-app",
+  "version": "1.0.0",
+  "description": "Appeer is an app made for student scheduling.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "Patrick Mehlbaum, Chris McKinney, Andrew Bergey",
+  "devDependencies": {
+    "electron": "^3.0.7"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
+}

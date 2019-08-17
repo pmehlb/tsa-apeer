@@ -1,0 +1,13 @@
+@media only all and (min-width:801px) {
+
+#dragbar {
+	height: 6vh;
+}
+
+#dragbar div.top {
+	margin-top: .9vh;
+}
+
+#content {
+	height: 93vh;
+}

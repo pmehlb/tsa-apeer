@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- meta / icon / title -->
+	<meta charset="UTF-8">
+	<title>Appeer Scheduler App</title>
+	
+	<!-- css -->
+	<link type="text/css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+	
+	<!-- js -->
+	<script src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script>window.$ = window.jQuery = require('jquery'); const remote = require('electron').remote</script>
+	
+	
+	<!-- custom stylesheets -->
+	<link type="text/css" rel="stylesheet" href="./css/main.css">
+	<link type="text/css" rel="stylesheet" href="./css/small-screen.css">
+	<link type="text/css" rel="stylesheet" href="./css/maximized.css">
+	
+  </head>
+  <body>
+	<!-- app-wide top bar for dragging, minimizing/maximizing, and quitting -->
+	<div id="dragbar" class="bg-dark" style="-webkit-app-region: drag;">
+		<div class="top" style="float: left;">
+			<h4 class="text-white ml-3">Appeer</h3>
+		</div>
+		<div class="top" style="float: right;">
+			<button id="min-btn" class="px-3 min-btn">–</button>
+			<button id="max-btn" class="px-3 min-btn">□</button>
+			<button id="close-btn" class="px-3 mr-2 close-btn">X</button>
+		</div>
+		<div style="overflow: auto;height: -webkit-fill-available;-webkit-app-region: drag;"></div>
+	</div>
+	
+	<div id="content" class="bg-light">
+		<div id="app-container">
+			<!-- <div id="loader" class="text-center h-100" style="padding-top: 25%;"><svg height="100" width="400"><style>.text{font: italic 4em Roboto Black}</style><text x="18%" y="50%" fill="black" class="text">loading...</text></svg></div> -->
+			<div id="page" style="overflow-y: auto;overflow-x: hidden;height: 100%;"></div>
+			
+			<script>
+				// load page using jquery
+				$("#page").load("http://localhost/appeer");
+				/*
+				setTimeout(function() {
+					// hide loader
+					$("#loader").hide();
+				}, 2200);
+				*/
+				
+				// use event delegation for exit buttons (log out and such)
+				$("#page #close").on('click', 'a', function() {
+					remote.getCurrentWindow().close();
+				});
+				
+				$("#page").on('click', 'a', function(e) {
+					if ($(this).attr("href") != "#") {
+						e.preventDefault();
+						$("#page").empty();
+						$("#page").load($(this).attr("href"));
+					}
+				});
+				
+				// event delegation for submitting forms
+				$("#page").on('submit', 'form', function(event) {
+					event.preventDefault();
+					// use asynchronous submission
+					$.ajax({
+						url: $(this).attr("action"),
+						dataType: "html",
+						type: "POST",
+						data: $(this).serialize(),
+						success: function(e) {
+							// set HTML of #page to response HTML
+							$("#page").html(e);
+						},
+						error: function(e) {
+							$("#page").html(e);
+						}
+					});
+				});
+				
+				function loadPage(request) {
+					$("#page").load(request);
+				}
+			</script>
+		</div>
+	</div>
+	
+	<!-- electron js -->
+	<script>require('./renderer.js');</script>
+	
+	<!-- bootstrap js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  </body>
+</html>
