@@ -15,7 +15,7 @@
   ],
   "author": "Patrick Mehlbaum, Chris McKinney, Andrew Bergey",
   "devDependencies": {
-    "electron": "^3.0.7"
+    "electron": "^7.2.4"
   },
   "dependencies": {
     "jquery": "^3.3.1"
